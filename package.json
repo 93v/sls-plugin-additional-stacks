@@ -1,0 +1,20 @@
+{
+  "name": "sls-plugin-additional-stacks",
+  "version": "0.0.1",
+  "description": "Serverless Framework Plugin to Deploy and Remove AWS Additional Stacks",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/93v/sls-plugin-additional-stacks.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/93v/sls-plugin-additional-stacks/issues"
+  },
+  "homepage": "https://github.com/93v/sls-plugin-additional-stacks#readme"
+}
