@@ -1,0 +1,59 @@
+defaults: &defaults
+  working_directory: ~/repo
+  docker:
+    - image: circleci/node
+
+version: 2
+jobs:
+  publish:
+    <<: *defaults
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package-lock.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: Installing node modules
+          command: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+
+      - run:
+          name: Linting
+          command: npm run lint
+
+      - run:
+          name: Testing
+          command: npm run test
+
+      - run:
+          name: Building
+          command: npm run build
+
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
+
+      - run:
+          name: Publish package
+          command: npm publish
+
+workflows:
+  version: 2
+  publish:
+    jobs:
+      - publish:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/

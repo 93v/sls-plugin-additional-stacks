@@ -2,19 +2,61 @@
   "name": "sls-plugin-additional-stacks",
   "version": "0.0.1",
   "description": "Serverless Framework Plugin to Deploy and Remove AWS Additional Stacks",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "tslint -p tsconfig.json",
+    "test": "jest",
+    "test:watch": "jest --watchAll",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags",
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/93v/sls-plugin-additional-stacks.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "serverless",
+    "serverless-plugin",
+    "sls",
+    "sls-plugin",
+    "aws",
+    "additional",
+    "stacks",
+    "additional-stacks",
+    "CloudFormation"
+  ],
+  "author": {
+    "name": "93v",
+    "email": "93v@protonmail.com"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/93v/sls-plugin-additional-stacks/issues"
   },
-  "homepage": "https://github.com/93v/sls-plugin-additional-stacks#readme"
+  "homepage": "https://github.com/93v/sls-plugin-additional-stacks#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.12",
+    "@types/node": "^12.0.0",
+    "@types/serverless": "^1.18.2",
+    "eslint": "^5.16.0",
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.0",
+    "serverless": "^1.41.1",
+    "ts-jest": "^24.0.2",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "dependencies": {
+    "ts-optchain": "^0.1.6"
+  }
 }
