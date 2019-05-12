@@ -40,6 +40,9 @@ class ServerlessPlugin {
             usage: 'Deploy Additional Stack',
           },
         },
+        options: {
+          skipAdditionalStacks: { usage: 'Skip deploying Additional Stacks' },
+        },
       },
       remove: {
         commands: {
@@ -86,6 +89,9 @@ class ServerlessPlugin {
   }
 
   private deployAdditionalStacks = async () => {
+    if (this.options.skipAdditionalStacks) {
+      return;
+    }
     try {
       return this.deployStacks(this.getStacks('deploy'));
     } catch (error) {
