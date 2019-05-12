@@ -48,6 +48,12 @@ To deploy a single Additional Stack without deploying the Serverless service, us
 sls deploy additionalStacks --stack [appName]
 ```
 
+To only deploy the Serverless service without deploying the Additional Stacks, use:
+
+```bash
+sls deploy --skipAdditionalStacks
+```
+
 To remove a single Additional Stack without removing the Serverless service, use:
 
 ```bash
