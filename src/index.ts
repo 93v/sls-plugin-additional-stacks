@@ -194,7 +194,7 @@ class ServerlessPlugin {
     } catch (error) {
       if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
         this.serverless.cli.log(
-          `IMPORTANT! Additional stack "${stackName}"` +
+          `IMPORTANT! Additional stack "${stackName}" ` +
             'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
             'to delete it as it has never finished creation.',
         );
@@ -228,7 +228,7 @@ class ServerlessPlugin {
     } catch (error) {
       if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
         this.serverless.cli.log(
-          `IMPORTANT! Additional stack "${stackName}"` +
+          `IMPORTANT! Additional stack "${stackName}" ` +
             'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
             'to delete it as it has never finished creation.',
         );
