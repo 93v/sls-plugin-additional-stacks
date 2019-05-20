@@ -1,6 +1,6 @@
 {
   "name": "sls-plugin-additional-stacks",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Serverless Framework Plugin to Deploy and Remove AWS Additional Stacks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
