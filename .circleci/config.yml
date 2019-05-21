@@ -5,7 +5,7 @@ defaults: &defaults
 
 version: 2
 jobs:
-  publish:
+  install:
     <<: *defaults
 
     steps:
@@ -19,7 +19,7 @@ jobs:
             - v1-dependencies-
 
       - run:
-          name: Installing node modules
+          name: Install node modules
           command: npm install
 
       - save_cache:
@@ -27,31 +27,85 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
 
+      - persist_to_workspace:
+          root: "~"
+          paths:
+            - repo
+
+  test:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: "~"
+
       - run:
-          name: Linting
+          name: Lint
           command: npm run lint
 
       - run:
-          name: Testing
+          name: Test
           command: npm run test
 
+      - persist_to_workspace:
+          root: "~"
+          paths:
+            - repo
+
+  build:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: "~"
+
       - run:
-          name: Building
+          name: Build
           command: npm run build
+
+      - persist_to_workspace:
+          root: "~"
+          paths:
+            - repo
+
+  publish:
+    <<: *defaults
+
+    steps:
+      - attach_workspace:
+          at: "~"
 
       - run:
           name: Authenticate with registry
           command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > ~/repo/.npmrc
 
       - run:
-          name: Publish package
+          name: Publish the package
           command: npm publish
 
 workflows:
   version: 2
-  publish:
+  install_test_build_publish:
     jobs:
+      - install:
+          filters:
+            tags:
+              only: /^v.*/
+      - test:
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - install
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - test
       - publish:
+          requires:
+            - build
           filters:
             tags:
               only: /^v.*/
