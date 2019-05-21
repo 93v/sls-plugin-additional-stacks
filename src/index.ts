@@ -48,7 +48,10 @@ class ServerlessPlugin {
         commands: {
           additionalStacks: {
             lifecycleEvents: ['remove'],
-            options: { stack: { usage: 'Additional Stack name to Remove' } },
+            options: {
+              all: { usage: 'Explicitly state the wish to remove all stacks' },
+              stack: { usage: 'Additional Stack name to Remove' },
+            },
             usage: 'Remove Additional Stack',
           },
         },
@@ -78,6 +81,16 @@ class ServerlessPlugin {
         if (k !== this.options.stack) {
           delete stacks[k];
         }
+      });
+    }
+
+    if (
+      purpose === 'remove' &&
+      this.options.stack == null &&
+      this.options.all == null
+    ) {
+      Object.keys(stacks).forEach((k) => {
+        delete stacks[k];
       });
     }
 

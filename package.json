@@ -15,7 +15,7 @@
     "preversion": "npm run lint",
     "version": "git add -A src",
     "postversion": "git push && git push --tags",
-    "start": "nodemon"
+    "start": "npm link && nodemon"
   },
   "repository": {
     "type": "git",
@@ -42,13 +42,13 @@
   },
   "homepage": "https://github.com/93v/sls-plugin-additional-stacks#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.12",
-    "@types/node": "^12.0.1",
+    "@types/jest": "^24.0.13",
+    "@types/node": "^12.0.2",
     "@types/serverless": "^1.18.2",
     "eslint": "^5.16.0",
     "jest": "^24.8.0",
     "nodemon": "^1.19.0",
-    "serverless": "^1.42.2",
+    "serverless": "^1.43.0",
     "ts-jest": "^24.0.2",
     "tslint": "^5.16.0",
     "typescript": "^3.4.5"
@@ -57,6 +57,6 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "ts-optchain": "^0.1.6"
+    "ts-optchain": "^0.1.7"
   }
 }

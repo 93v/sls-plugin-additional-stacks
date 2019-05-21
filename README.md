@@ -63,13 +63,9 @@ sls remove additionalStacks --stack [appName]
 To remove all Additional Stacks without removing the Serverless service, use:
 
 ```bash
-sls remove additionalStacks
+sls remove additionalStacks --all
 ```
 
 ## TODO
 
 - Add tests
-
-## Known Issues
-
-- At this moment the plugin does not allow the serverless framework to correctly understand the stacks for offline
