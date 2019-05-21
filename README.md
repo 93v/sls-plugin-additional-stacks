@@ -1,5 +1,17 @@
 # sls-plugin-additional-stacks
 
+![David](https://img.shields.io/david/dev/93v/sls-plugin-additional-stacks.svg)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/93v/sls-plugin-additional-stacks.svg)
+![GitHub repo size](https://img.shields.io/github/repo-size/93v/sls-plugin-additional-stacks.svg)
+![npm](https://img.shields.io/npm/dw/sls-plugin-additional-stacks.svg)
+![npm](https://img.shields.io/npm/dm/sls-plugin-additional-stacks.svg)
+![npm](https://img.shields.io/npm/dy/sls-plugin-additional-stacks.svg)
+![npm](https://img.shields.io/npm/dt/sls-plugin-additional-stacks.svg)
+![NPM](https://img.shields.io/npm/l/sls-plugin-additional-stacks.svg)
+![npm](https://img.shields.io/npm/v/sls-plugin-additional-stacks.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/93v/sls-plugin-additional-stacks.svg)
+![npm collaborators](https://img.shields.io/npm/collaborators/sls-plugin-additional-stacks.svg)
+
 Serverless Framework Plugin to Deploy and Remove AWS Additional Stacks
 
 ## Installation
