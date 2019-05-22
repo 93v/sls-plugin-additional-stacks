@@ -1,6 +1,6 @@
 module.exports = {
   extends: ['eslint:recommended'],
-  parserOptions: { ecmaVersion: 2017 },
+  parserOptions: { ecmaVersion: 2018 },
   env: { browser: true, node: true, es6: true },
   globals: { module: true, process: true, require: true },
   rules: {
@@ -20,7 +20,6 @@ module.exports = {
       { anonymous: 'always', named: 'never' },
     ],
     strict: ['error', 'safe'],
-    quotes: ['error', 'single'],
     'comma-dangle': ['error', 'always-multiline'],
     'new-cap': ['error', { capIsNew: false }],
     'require-jsdoc': [

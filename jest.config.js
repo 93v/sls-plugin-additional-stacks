@@ -1,8 +1,6 @@
 'use strict';
 
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts', 'src/**/*.js'],
   coverageThreshold: {
@@ -13,4 +11,6 @@ module.exports = {
       statements: 0,
     },
   },
+  testEnvironment: 'node',
+  preset: 'ts-jest',
 };

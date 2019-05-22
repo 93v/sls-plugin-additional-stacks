@@ -2,10 +2,6 @@
   "defaultSeverity": "error",
   "extends": ["tslint:recommended", "tslint:latest"],
   "jsRules": {},
-  "rules": {
-    "no-implicit-dependencies": [false, "dev"],
-    "no-submodule-imports": false,
-    "quotemark": [true, "single"]
-  },
+  "rules": { "no-submodule-imports": [true, "serverless"] },
   "rulesDirectory": []
 }

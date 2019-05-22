@@ -1,4 +1,4 @@
-import Serverless from 'serverless';
+import Serverless from "serverless";
 
 export interface IServerlessOptions extends Serverless.Options {
   all?: string;
