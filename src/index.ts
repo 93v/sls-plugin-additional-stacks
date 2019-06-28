@@ -1,6 +1,5 @@
 import Serverless from "serverless";
 import { oc } from "ts-optchain";
-
 import {
   IAdditionalStack,
   IAdditionalStacksMap,
@@ -13,13 +12,13 @@ const asyncWait = async (delay: number) =>
   new Promise((res) => setTimeout(res, delay));
 
 class ServerlessPlugin {
-  public commands: {
+  public readonly commands: {
     [command: string]: IServerlessPluginCommand;
   };
-  public hooks: {
+  public readonly hooks: {
     [event: string]: () => Promise<any>;
   };
-  public provider: IProvider;
+  public readonly provider: IProvider;
   private readonly additionalStacksMap: IAdditionalStacksMap;
 
   public constructor(
