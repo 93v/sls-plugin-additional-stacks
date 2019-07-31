@@ -11,7 +11,7 @@ import { IServerlessPluginCommand } from "../types/serverless-plugin-command";
 const asyncWait = async (delay: number) =>
   new Promise((res) => setTimeout(res, delay));
 
-class ServerlessPlugin {
+class ServerlessAdditionalStacksPlugin {
   public readonly commands: {
     [command: string]: IServerlessPluginCommand;
   };
@@ -377,4 +377,4 @@ class ServerlessPlugin {
   }
 }
 
-export = ServerlessPlugin;
+export = ServerlessAdditionalStacksPlugin;
