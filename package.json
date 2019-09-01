@@ -1,6 +1,6 @@
 {
   "name": "sls-plugin-additional-stacks",
-  "version": "4.2.0",
+  "version": "0.0.0-development",
   "description": "Serverless Framework Plugin to Deploy and Remove AWS Additional Stacks",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,12 +10,8 @@
     "test:watch": "jest --watchAll",
     "build": "tsc",
     "watch": "tsc -w",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
-    "preversion": "npm run lint",
-    "version": "git add -A src",
-    "postversion": "git push && git push --tags",
-    "start": "npm link && nodemon"
+    "start": "npm link && nodemon",
+    "semantic-release": "semantic-release"
   },
   "repository": {
     "type": "git",
@@ -52,21 +48,22 @@
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^8.1.0",
     "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.3",
     "@types/serverless": "^1.18.2",
-    "eslint": "^6.2.1",
-    "husky": "^3.0.4",
+    "eslint": "^6.3.0",
+    "husky": "^3.0.5",
     "jest": "^24.9.0",
     "nodemon": "^1.19.1",
+    "semantic-release": "^15.13.24",
     "ts-jest": "^24.0.2",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2"
   },
   "files": [
     "dist/**/*"
   ],
   "dependencies": {
-    "serverless": "^1.50.0",
+    "serverless": "^1.51.0",
     "ts-optchain": "^0.1.8"
   }
 }
