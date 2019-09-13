@@ -128,7 +128,7 @@ class ServerlessAdditionalStacksPlugin {
       }
       throw error;
     }
-  }
+  };
 
   private readonly deleteStack = async (
     stackName: string,
@@ -160,7 +160,7 @@ class ServerlessAdditionalStacksPlugin {
       }
       throw error;
     }
-  }
+  };
 
   private readonly deployAdditionalStacks = async () => {
     if (this.options.skipAdditionalStacks) {
@@ -173,7 +173,7 @@ class ServerlessAdditionalStacksPlugin {
 
       return;
     }
-  }
+  };
 
   private readonly deployStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Deploying additional stacks...");
@@ -182,7 +182,7 @@ class ServerlessAdditionalStacksPlugin {
         this.createStack(stackName, stack),
       ),
     );
-  }
+  };
 
   private readonly describeStack = async (
     stackName: string,
@@ -208,7 +208,7 @@ class ServerlessAdditionalStacksPlugin {
       }
       throw error;
     }
-  }
+  };
 
   private readonly describeStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Describing additional stacks...");
@@ -223,7 +223,7 @@ class ServerlessAdditionalStacksPlugin {
         `  ${stack.name}: ${stack.StackStatus || "does not exist"}`,
       ),
     );
-  }
+  };
 
   private readonly generateCloudFormationTemplate = (
     stackName: string,
@@ -238,7 +238,7 @@ class ServerlessAdditionalStacksPlugin {
     Parameters: stack.Parameters || undefined,
     Resources: stack.Resources || undefined,
     Transform: stack.Transform || undefined,
-  })
+  });
   private readonly getAdditionalStacksInfo = async () => {
     try {
       return this.describeStacks(this.getStacks("describe"));
@@ -247,13 +247,13 @@ class ServerlessAdditionalStacksPlugin {
 
       return;
     }
-  }
+  };
 
   private readonly getStackFullName = (
     stackName: string,
     stack: IAdditionalStack,
   ) =>
-    oc(stack).StackName(`${this.provider.naming.getStackName()}-${stackName}`)
+    oc(stack).StackName(`${this.provider.naming.getStackName()}-${stackName}`);
 
   private readonly getStacks = (
     purpose: "deploy" | "remove" | "describe" = "deploy",
@@ -288,7 +288,7 @@ class ServerlessAdditionalStacksPlugin {
     }
 
     return stacks;
-  }
+  };
   private readonly removeAdditionalStacks = async () => {
     try {
       return this.removeStacks(this.getStacks("remove"));
@@ -297,7 +297,7 @@ class ServerlessAdditionalStacksPlugin {
 
       return;
     }
-  }
+  };
 
   private readonly removeStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Removing additional stacks...");
@@ -306,7 +306,7 @@ class ServerlessAdditionalStacksPlugin {
         this.deleteStack(stackName, stack),
       ),
     );
-  }
+  };
 
   private readonly waitForStack = async (
     stackName: string,
@@ -374,7 +374,7 @@ class ServerlessAdditionalStacksPlugin {
         throw error;
       }
     }
-  }
+  };
 }
 
 export = ServerlessAdditionalStacksPlugin;
