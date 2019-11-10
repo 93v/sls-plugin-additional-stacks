@@ -1,5 +1,4 @@
 import Serverless from "serverless";
-import { oc } from "ts-optchain";
 import {
   IAdditionalStack,
   IAdditionalStacksMap,
@@ -23,9 +22,8 @@ class ServerlessAdditionalStacksPlugin {
   ) {
     this.provider = this.serverless.getProvider("aws");
 
-    this.additionalStacksMap = oc(
-      this.serverless,
-    ).service.custom.additionalStacks({});
+    this.additionalStacksMap =
+      this.serverless.service?.custom?.additionalStacks || {};
 
     this.commands = {
       deploy: {
@@ -70,7 +68,7 @@ class ServerlessAdditionalStacksPlugin {
       const stackDescription = await this.describeStack(stackName, stack);
 
       const stackTags = {
-        STAGE: oc(this.options).stage(this.serverless.service.provider.stage),
+        STAGE: this.options.stage || this.serverless.service.provider.stage,
         ...stack.Tags,
       };
 
@@ -248,8 +246,7 @@ class ServerlessAdditionalStacksPlugin {
   private readonly getStackFullName = (
     stackName: string,
     stack: IAdditionalStack,
-  ) =>
-    oc(stack).StackName(`${this.provider.naming.getStackName()}-${stackName}`);
+  ) => stack.StackName || `${this.provider.naming.getStackName()}-${stackName}`;
 
   private readonly getStacks = (
     purpose: "deploy" | "remove" | "describe" = "deploy",
