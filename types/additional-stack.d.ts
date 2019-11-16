@@ -1,4 +1,4 @@
-export interface IAdditionalStack {
+export interface AdditionalStack {
   Conditions?: any | null;
   Deploy?: any | null;
   Description?: any | null;
@@ -12,4 +12,4 @@ export interface IAdditionalStack {
   Transform?: any | null;
 }
 
-export type IAdditionalStacksMap = Record<string, IAdditionalStack>;
+export type IAdditionalStacksMap = Record<string, AdditionalStack>;

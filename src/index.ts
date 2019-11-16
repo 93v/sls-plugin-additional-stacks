@@ -1,24 +1,24 @@
 import Serverless from "serverless";
 import {
-  IAdditionalStack,
+  AdditionalStack,
   IAdditionalStacksMap,
 } from "../types/additional-stack";
-import { IProvider } from "../types/provider";
-import { IServerlessOptions } from "../types/serverless-options";
-import { IServerlessPluginCommand } from "../types/serverless-plugin-command";
+import { Provider } from "../types/provider";
+import { ServerlessOptions } from "../types/serverless-options";
+import { ServerlessPluginCommand } from "../types/serverless-plugin-command";
 
 const asyncWait = async (delay: number) =>
   new Promise((res) => setTimeout(res, delay));
 
 class ServerlessAdditionalStacksPlugin {
-  public readonly commands: Record<string, IServerlessPluginCommand>;
+  public readonly commands: Record<string, ServerlessPluginCommand>;
   public readonly hooks: Record<string, () => Promise<any>>;
-  public readonly provider: IProvider;
+  public readonly provider: Provider;
   private readonly additionalStacksMap: IAdditionalStacksMap;
 
   public constructor(
     private readonly serverless: Serverless,
-    private readonly options: IServerlessOptions,
+    private readonly options: ServerlessOptions,
   ) {
     this.provider = this.serverless.getProvider("aws");
 
@@ -62,7 +62,7 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly createStack = async (
     stackName: string,
-    stack: IAdditionalStack,
+    stack: AdditionalStack,
   ) => {
     try {
       const stackDescription = await this.describeStack(stackName, stack);
@@ -126,7 +126,7 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly deleteStack = async (
     stackName: string,
-    stack: IAdditionalStack,
+    stack: AdditionalStack,
   ) => {
     try {
       const params = {
@@ -180,7 +180,7 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly describeStack = async (
     stackName: string,
-    stack: IAdditionalStack,
+    stack: AdditionalStack,
   ) => {
     try {
       const response = await this.provider.request(
@@ -221,7 +221,7 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly generateCloudFormationTemplate = (
     stackName: string,
-    stack: IAdditionalStack,
+    stack: AdditionalStack,
   ) => ({
     AWSTemplateFormatVersion: "2010-09-09",
     Conditions: stack.Conditions || undefined,
@@ -245,7 +245,7 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly getStackFullName = (
     stackName: string,
-    stack: IAdditionalStack,
+    stack: AdditionalStack,
   ) => stack.StackName || `${this.provider.naming.getStackName()}-${stackName}`;
 
   private readonly getStacks = (
@@ -303,7 +303,7 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly waitForStack = async (
     stackName: string,
-    stack: IAdditionalStack,
+    stack: AdditionalStack,
   ) => {
     let finished = false;
 
