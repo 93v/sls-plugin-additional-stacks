@@ -6,6 +6,7 @@ import {
 import { Provider } from "../types/provider";
 import { ServerlessOptions } from "../types/serverless-options";
 import { ServerlessPluginCommand } from "../types/serverless-plugin-command";
+import { parallelLimit } from "./utils";
 
 const asyncWait = async (delay: number) =>
   new Promise((res) => setTimeout(res, delay));
@@ -107,8 +108,8 @@ class ServerlessAdditionalStacksPlugin {
       if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
         this.serverless.cli.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
-            'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
-            "to delete it as it has never finished creation.",
+          'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
+          "to delete it as it has never finished creation.",
         );
 
         return;
@@ -146,8 +147,8 @@ class ServerlessAdditionalStacksPlugin {
       if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
         this.serverless.cli.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
-            'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
-            "to delete it as it has never finished creation.",
+          'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
+          "to delete it as it has never finished creation.",
         );
 
         return;
@@ -172,9 +173,12 @@ class ServerlessAdditionalStacksPlugin {
   private readonly deployStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Deploying additional stacks...");
     await Promise.all(
-      Object.entries(stacks).map(([stackName, stack]) =>
-        this.createStack(stackName, stack),
-      ),
+      await parallelLimit(
+        Object.entries(stacks).map(([stackName, stack]) =>
+          this.createStack(stackName, stack),
+        ),
+        5,
+      )
     );
   };
 
@@ -207,10 +211,13 @@ class ServerlessAdditionalStacksPlugin {
   private readonly describeStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Describing additional stacks...");
     const additionalStacks = await Promise.all(
-      Object.entries(stacks).map(async ([stackName, stack]) => ({
-        ...(await this.describeStack(stackName, stack)),
-        name: stackName,
-      })),
+      await parallelLimit(
+        Object.entries(stacks).map(async ([stackName, stack]) => ({
+          ...(await this.describeStack(stackName, stack)),
+          name: stackName,
+        })),
+        5,
+      )
     );
     additionalStacks.forEach((stack) =>
       this.serverless.cli.log(
@@ -295,9 +302,12 @@ class ServerlessAdditionalStacksPlugin {
   private readonly removeStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Removing additional stacks...");
     await Promise.all(
-      Object.entries(stacks).map(([stackName, stack]) =>
-        this.deleteStack(stackName, stack),
-      ),
+      await parallelLimit(
+        Object.entries(stacks).map(([stackName, stack]) =>
+          this.deleteStack(stackName, stack),
+        ),
+        5,
+      )
     );
   };
 
