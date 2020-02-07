@@ -1,4 +1,5 @@
 import Serverless from "serverless";
+
 import {
   AdditionalStack,
   IAdditionalStacksMap,
@@ -108,8 +109,8 @@ class ServerlessAdditionalStacksPlugin {
       if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
         this.serverless.cli.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
-          'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
-          "to delete it as it has never finished creation.",
+            'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
+            "to delete it as it has never finished creation.",
         );
 
         return;
@@ -147,8 +148,8 @@ class ServerlessAdditionalStacksPlugin {
       if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
         this.serverless.cli.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
-          'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
-          "to delete it as it has never finished creation.",
+            'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
+            "to delete it as it has never finished creation.",
         );
 
         return;
@@ -178,7 +179,7 @@ class ServerlessAdditionalStacksPlugin {
           this.createStack(stackName, stack),
         ),
         5,
-      )
+      ),
     );
   };
 
@@ -217,7 +218,7 @@ class ServerlessAdditionalStacksPlugin {
           name: stackName,
         })),
         5,
-      )
+      ),
     );
     additionalStacks.forEach((stack) =>
       this.serverless.cli.log(
@@ -307,7 +308,7 @@ class ServerlessAdditionalStacksPlugin {
           this.deleteStack(stackName, stack),
         ),
         5,
-      )
+      ),
     );
   };
 
