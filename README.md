@@ -1,6 +1,6 @@
 # sls-plugin-additional-stacks
 
-![David](https://img.shields.io/david/dev/93v/sls-plugin-additional-stacks.svg)
+![David](https://img.shields.io/david/93v/sls-plugin-additional-stacks.svg)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/93v/sls-plugin-additional-stacks.svg)
 ![GitHub repo size](https://img.shields.io/github/repo-size/93v/sls-plugin-additional-stacks.svg)
 ![npm](https://img.shields.io/npm/dw/sls-plugin-additional-stacks.svg)
