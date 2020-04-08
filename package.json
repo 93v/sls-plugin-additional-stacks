@@ -11,7 +11,9 @@
     "build": "tsc",
     "watch": "tsc -w",
     "start": "npm link && nodemon",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -67,6 +69,8 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "serverless": "^1.67.3"
-  }
+    "serverless": "^1.67.3",
+    "snyk": "^1.305.0"
+  },
+  "snyk": true
 }
