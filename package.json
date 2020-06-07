@@ -48,25 +48,25 @@
     "@commitlint/cli": "^8.3.5",
     "@commitlint/config-conventional": "^8.3.4",
     "@types/jest": "^25.2.3",
-    "@types/node": "^13.13.9",
-    "@types/serverless": "^1.67.3",
-    "@typescript-eslint/eslint-plugin": "^2.34.0",
-    "@typescript-eslint/parser": "^2.34.0",
-    "eslint": "^6.8.0",
+    "@types/node": "^14.0.11",
+    "@types/serverless": "^1.72.0",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "@typescript-eslint/parser": "^3.1.0",
+    "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.3",
     "husky": "^4.2.5",
-    "jest": "^25.5.4",
+    "jest": "^26.0.1",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5",
     "semantic-release": "^17.0.8",
-    "ts-jest": "^25.5.1",
-    "typescript": "^3.9.3"
+    "ts-jest": "^26.1.0",
+    "typescript": "^3.9.5"
   },
   "files": [
     "dist/**/*"
   ],
   "dependencies": {
-    "serverless": "^1.71.3"
+    "serverless": "^1.72.0"
   }
 }
