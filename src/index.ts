@@ -9,6 +9,8 @@ import { ServerlessOptions } from "../types/serverless-options";
 import { ServerlessPluginCommand } from "../types/serverless-plugin-command";
 import { parallelLimit } from "./utils";
 
+const PARALLEL_LIMIT_SIZE = 3;
+
 const asyncWait = async (delay: number) =>
   new Promise((res) => setTimeout(res, delay));
 
@@ -76,7 +78,7 @@ class ServerlessAdditionalStacksPlugin {
 
       const cfTemplate = this.generateCloudFormationTemplate(stackName, stack);
 
-      const params = {
+      const params: Record<string, unknown> = {
         Capabilities: ["CAPABILITY_IAM", "CAPABILITY_NAMED_IAM"],
         OnFailure: "ROLLBACK",
         Parameters: [],
@@ -178,7 +180,7 @@ class ServerlessAdditionalStacksPlugin {
         Object.entries(stacks).map(([stackName, stack]) =>
           this.createStack(stackName, stack),
         ),
-        5,
+        PARALLEL_LIMIT_SIZE,
       ),
     );
   };
@@ -217,7 +219,7 @@ class ServerlessAdditionalStacksPlugin {
           ...(await this.describeStack(stackName, stack)),
           name: stackName,
         })),
-        5,
+        PARALLEL_LIMIT_SIZE,
       ),
     );
     additionalStacks.forEach((stack) =>
@@ -307,7 +309,7 @@ class ServerlessAdditionalStacksPlugin {
         Object.entries(stacks).map(([stackName, stack]) =>
           this.deleteStack(stackName, stack),
         ),
-        5,
+        PARALLEL_LIMIT_SIZE,
       ),
     );
   };
