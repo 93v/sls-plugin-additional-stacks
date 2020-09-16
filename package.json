@@ -67,6 +67,6 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "serverless": "^1.83.0"
+    "serverless": "^2.0.0"
   }
 }
