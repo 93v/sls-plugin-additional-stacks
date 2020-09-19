@@ -67,6 +67,7 @@
     "dist/**/*"
   ],
   "dependencies": {
+    "@supercharge/promise-pool": "^1.4.0",
     "serverless": "^1.83.0"
   }
 }

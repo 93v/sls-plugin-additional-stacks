@@ -1,3 +1,4 @@
+import PromisePool from "@supercharge/promise-pool";
 import Serverless from "serverless";
 
 import {
@@ -7,7 +8,6 @@ import {
 import { Provider } from "../types/provider";
 import { ServerlessOptions } from "../types/serverless-options";
 import { ServerlessPluginCommand } from "../types/serverless-plugin-command";
-import { parallelLimit } from "./utils";
 
 const PARALLEL_LIMIT_SIZE = 3;
 
@@ -175,14 +175,12 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly deployStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Deploying additional stacks...");
-    await Promise.all(
-      await parallelLimit(
-        Object.entries(stacks).map(([stackName, stack]) =>
-          this.createStack(stackName, stack),
-        ),
-        PARALLEL_LIMIT_SIZE,
-      ),
-    );
+
+    await PromisePool.for(Object.entries(stacks))
+      .withConcurrency(PARALLEL_LIMIT_SIZE)
+      .process(async ([stackName, stack]) =>
+        this.createStack(stackName, stack),
+      );
   };
 
   private readonly describeStack = async (
@@ -213,16 +211,15 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly describeStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Describing additional stacks...");
-    const additionalStacks = await Promise.all(
-      await parallelLimit(
-        Object.entries(stacks).map(async ([stackName, stack]) => ({
-          ...(await this.describeStack(stackName, stack)),
-          name: stackName,
-        })),
-        PARALLEL_LIMIT_SIZE,
-      ),
-    );
-    additionalStacks.forEach((stack) =>
+
+    const { results } = await PromisePool.for(Object.entries(stacks))
+      .withConcurrency(PARALLEL_LIMIT_SIZE)
+      .process(async ([stackName, stack]) => ({
+        ...(await this.describeStack(stackName, stack)),
+        name: stackName,
+      }));
+
+    (await Promise.all(results)).forEach((stack) =>
       this.serverless.cli.log(
         `  ${stack.name}: ${stack.StackStatus || "does not exist"}`,
       ),
@@ -304,14 +301,11 @@ class ServerlessAdditionalStacksPlugin {
 
   private readonly removeStacks = async (stacks: IAdditionalStacksMap) => {
     this.serverless.cli.log("Removing additional stacks...");
-    await Promise.all(
-      await parallelLimit(
-        Object.entries(stacks).map(([stackName, stack]) =>
-          this.deleteStack(stackName, stack),
-        ),
-        PARALLEL_LIMIT_SIZE,
-      ),
-    );
+    await PromisePool.for(Object.entries(stacks))
+      .withConcurrency(PARALLEL_LIMIT_SIZE)
+      .process(async ([stackName, stack]) =>
+        this.deleteStack(stackName, stack),
+      );
   };
 
   private readonly waitForStack = async (
