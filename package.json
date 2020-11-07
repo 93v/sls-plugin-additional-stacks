@@ -68,6 +68,6 @@
   ],
   "dependencies": {
     "@supercharge/promise-pool": "^1.6.0",
-    "serverless": "^1.83.2"
+    "serverless": "^2.11.0"
   }
 }
