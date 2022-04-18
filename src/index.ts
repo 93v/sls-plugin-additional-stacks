@@ -108,7 +108,10 @@ class ServerlessAdditionalStacksPlugin {
         `Additional Stack "${stackName}" successfully created/updated!`,
       );
     } catch (error) {
-      if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
+      if (
+        (error as Error).message &&
+        (error as Error).message.match(/ROLLBACK_COMPLETE/)
+      ) {
         this.serverless.cli.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
             'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
@@ -117,7 +120,10 @@ class ServerlessAdditionalStacksPlugin {
 
         return;
       }
-      if (error.message && error.message.match(/^No updates/)) {
+      if (
+        (error as Error).message &&
+        (error as Error).message.match(/^No updates/)
+      ) {
         this.serverless.cli.log(
           `Additional stack "${stackName}" has not changed.`,
         );
@@ -147,7 +153,10 @@ class ServerlessAdditionalStacksPlugin {
 
       await this.waitForStack(stackName, stack);
     } catch (error) {
-      if (error.message && error.message.match(/ROLLBACK_COMPLETE/)) {
+      if (
+        (error as Error).message &&
+        (error as Error).message.match(/ROLLBACK_COMPLETE/)
+      ) {
         this.serverless.cli.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
             'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
@@ -167,7 +176,7 @@ class ServerlessAdditionalStacksPlugin {
     try {
       return this.deployStacks(this.getStacks("deploy"));
     } catch (error) {
-      this.serverless.cli.log(error);
+      this.serverless.cli.log((error as Error).toString());
 
       return;
     }
@@ -202,7 +211,10 @@ class ServerlessAdditionalStacksPlugin {
 
       return response.Stacks[0];
     } catch (error) {
-      if (error.message && error.message.match(/does not exist$/)) {
+      if (
+        (error as Error).message &&
+        (error as Error).message.match(/does not exist$/)
+      ) {
         return null;
       }
       throw error;
@@ -244,7 +256,7 @@ class ServerlessAdditionalStacksPlugin {
     try {
       return this.describeStacks(this.getStacks("describe"));
     } catch (error) {
-      this.serverless.cli.log(error);
+      this.serverless.cli.log((error as Error).toString());
 
       return;
     }
@@ -293,7 +305,7 @@ class ServerlessAdditionalStacksPlugin {
     try {
       return this.removeStacks(this.getStacks("remove"));
     } catch (error) {
-      this.serverless.cli.log(error);
+      this.serverless.cli.log((error as Error).toString());
 
       return;
     }
@@ -367,7 +379,10 @@ class ServerlessAdditionalStacksPlugin {
 
         return;
       } catch (error) {
-        if (error.message && error.message.match(/^Rate exceeded/)) {
+        if (
+          (error as Error).message &&
+          (error as Error).message.match(/^Rate exceeded/)
+        ) {
           await asyncWait(3000);
           continue;
         }
