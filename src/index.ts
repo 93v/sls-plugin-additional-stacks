@@ -1,5 +1,6 @@
-import PromisePool from "@supercharge/promise-pool";
 import Serverless from "serverless";
+
+import PromisePool from "@supercharge/promise-pool";
 
 import {
   AdditionalStack,
