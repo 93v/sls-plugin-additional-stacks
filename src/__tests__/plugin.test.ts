@@ -7,7 +7,11 @@ const options: any = {};
 
 describe("Serverless Plugin Platform Apps", () => {
   test("Should meet Serverless Plugin Interface", () => {
-    const plugin = new ServerlessAdditionalStacksPlugin(serverless, options);
+    const plugin = new ServerlessAdditionalStacksPlugin(serverless, options, {
+      log: () => {
+        return;
+      },
+    });
     expect(plugin.hooks).toEqual({
       "after:info:info": expect.any(Function),
       "before:deploy:deploy": expect.any(Function),

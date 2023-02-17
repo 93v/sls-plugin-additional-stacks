@@ -1,4 +1,5 @@
 import Serverless from "serverless";
+import { setTimeout } from "timers/promises";
 
 import PromisePool from "@supercharge/promise-pool";
 
@@ -12,20 +13,20 @@ import { ServerlessPluginCommand } from "../types/serverless-plugin-command";
 
 const PARALLEL_LIMIT_SIZE = 3;
 
-const asyncWait = async (delay: number) =>
-  new Promise((res) => setTimeout(res, delay));
-
 class ServerlessAdditionalStacksPlugin {
   public readonly commands: Record<string, ServerlessPluginCommand>;
   public readonly hooks: Record<string, () => Promise<any>>;
   public readonly provider: Provider;
   private readonly additionalStacksMap: IAdditionalStacksMap;
+  private readonly log: (message: string) => void;
 
   public constructor(
     private readonly serverless: Serverless,
     private readonly options: ServerlessOptions,
+    { log }: { log: (message: string) => void },
   ) {
     this.provider = this.serverless.getProvider("aws");
+    this.log = log;
 
     this.additionalStacksMap =
       this.serverless.service?.custom?.additionalStacks || {};
@@ -105,15 +106,13 @@ class ServerlessAdditionalStacksPlugin {
 
       await this.waitForStack(stackName, stack);
 
-      this.serverless.cli.log(
-        `Additional Stack "${stackName}" successfully created/updated!`,
-      );
+      this.log(`Additional Stack "${stackName}" successfully created/updated!`);
     } catch (error) {
       if (
         (error as Error).message &&
         (error as Error).message.match(/ROLLBACK_COMPLETE/)
       ) {
-        this.serverless.cli.log(
+        this.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
             'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
             "to delete it as it has never finished creation.",
@@ -125,9 +124,7 @@ class ServerlessAdditionalStacksPlugin {
         (error as Error).message &&
         (error as Error).message.match(/^No updates/)
       ) {
-        this.serverless.cli.log(
-          `Additional stack "${stackName}" has not changed.`,
-        );
+        this.log(`Additional stack "${stackName}" has not changed.`);
 
         return;
       }
@@ -158,7 +155,7 @@ class ServerlessAdditionalStacksPlugin {
         (error as Error).message &&
         (error as Error).message.match(/ROLLBACK_COMPLETE/)
       ) {
-        this.serverless.cli.log(
+        this.log(
           `IMPORTANT! Additional stack "${stackName}" ` +
             'is in "ROLLBACK_COMPLETE" state. The only way forward is ' +
             "to delete it as it has never finished creation.",
@@ -177,14 +174,14 @@ class ServerlessAdditionalStacksPlugin {
     try {
       return this.deployStacks(this.getStacks("deploy"));
     } catch (error) {
-      this.serverless.cli.log((error as Error).toString());
+      this.log((error as Error).toString());
 
       return;
     }
   };
 
   private readonly deployStacks = async (stacks: IAdditionalStacksMap) => {
-    this.serverless.cli.log("Deploying additional stacks...");
+    this.log("Deploying additional stacks...");
 
     await PromisePool.for(Object.entries(stacks))
       .withConcurrency(PARALLEL_LIMIT_SIZE)
@@ -223,7 +220,7 @@ class ServerlessAdditionalStacksPlugin {
   };
 
   private readonly describeStacks = async (stacks: IAdditionalStacksMap) => {
-    this.serverless.cli.log("Describing additional stacks...");
+    this.log("Describing additional stacks...");
 
     const { results } = await PromisePool.for(Object.entries(stacks))
       .withConcurrency(PARALLEL_LIMIT_SIZE)
@@ -233,9 +230,7 @@ class ServerlessAdditionalStacksPlugin {
       }));
 
     (await Promise.all(results)).forEach((stack) =>
-      this.serverless.cli.log(
-        `  ${stack.name}: ${stack.StackStatus || "does not exist"}`,
-      ),
+      this.log(`  ${stack.name}: ${stack.StackStatus || "does not exist"}`),
     );
   };
 
@@ -257,7 +252,7 @@ class ServerlessAdditionalStacksPlugin {
     try {
       return this.describeStacks(this.getStacks("describe"));
     } catch (error) {
-      this.serverless.cli.log((error as Error).toString());
+      this.log((error as Error).toString());
 
       return;
     }
@@ -306,14 +301,14 @@ class ServerlessAdditionalStacksPlugin {
     try {
       return this.removeStacks(this.getStacks("remove"));
     } catch (error) {
-      this.serverless.cli.log((error as Error).toString());
+      this.log((error as Error).toString());
 
       return;
     }
   };
 
   private readonly removeStacks = async (stacks: IAdditionalStacksMap) => {
-    this.serverless.cli.log("Removing additional stacks...");
+    this.log("Removing additional stacks...");
     await PromisePool.for(Object.entries(stacks))
       .withConcurrency(PARALLEL_LIMIT_SIZE)
       .process(async ([stackName, stack]) =>
@@ -332,9 +327,7 @@ class ServerlessAdditionalStacksPlugin {
         const stackDescription = await this.describeStack(stackName, stack);
 
         if (stackDescription == null) {
-          this.serverless.cli.log(
-            `Additional stack "${stackName}" removed successfully.`,
-          );
+          this.log(`Additional stack "${stackName}" removed successfully.`);
 
           return;
         }
@@ -351,10 +344,8 @@ class ServerlessAdditionalStacksPlugin {
             "UPDATE_ROLLBACK_IN_PROGRESS",
           ].includes(stackDescription.StackStatus)
         ) {
-          this.serverless.cli.log(
-            `Waiting for "${stackName}" status update...`,
-          );
-          await asyncWait(3000);
+          this.log(`Waiting for "${stackName}" status update...`);
+          await setTimeout(3000);
           continue;
         }
 
@@ -373,7 +364,7 @@ class ServerlessAdditionalStacksPlugin {
           );
         }
 
-        this.serverless.cli.log(
+        this.log(
           `Additional stack "${stackName}" (${stackDescription.StackStatus}).`,
         );
         finished = true;
@@ -384,7 +375,7 @@ class ServerlessAdditionalStacksPlugin {
           (error as Error).message &&
           (error as Error).message.match(/^Rate exceeded/)
         ) {
-          await asyncWait(3000);
+          await setTimeout(3000);
           continue;
         }
         throw error;
