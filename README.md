@@ -77,7 +77,3 @@ To remove all Additional Stacks without removing the Serverless service, use:
 ```bash
 sls remove additionalStacks --all
 ```
-
-## TODO
-
-- Add tests
