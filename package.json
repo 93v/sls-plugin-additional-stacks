@@ -67,7 +67,7 @@
     "dist/**/*"
   ],
   "dependencies": {
-    "@supercharge/promise-pool": "^2.4.0",
+    "@supercharge/promise-pool": "^3.1.1",
     "serverless": "^3.27.0"
   },
   "volta": {
